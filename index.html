@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Mobile Quiz App with Roles</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-main">
+            <h1>Advanced Mobile Quiz App</h1>
+            <p class="subtitle">Student & Teacher login • Dynamic subjects • Custom timer • OOP-based engine</p>
+        </div>
+        <div class="header-right">
+            <span id="header-user-info" class="muted small-text">Not logged in</span>
+            <button id="logout-btn" class="btn header-btn hidden">Logout</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Authentication Section -->
+        <section id="auth-section">
+            <h2>Welcome</h2>
+            <p>Select your role to continue: <strong>Student</strong> or <strong>Teacher</strong>.</p>
+
+            <div class="auth-grid">
+                <div class="card">
+                    <h3>Student Login</h3>
+                    <p class="muted">Students can attempt quizzes and see their own result at the end.</p>
+                    <div class="form-group">
+                        <label for="student-name">Student Name</label>
+                        <input type="text" id="student-name" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" placeholder="e.g., 233003122E">
+                    </div>
+                    <button id="student-login-btn" class="btn primary-btn full-width">Continue as Student</button>
+                </div>
+
+                <div class="card">
+                    <h3>Teacher Login</h3>
+                    <p class="muted">Teachers can see all stored marks and manage subjects & questions (like Google Forms).</p>
+                    <div class="form-group">
+                        <label for="teacher-username">Teacher Username</label>
+                        <input type="text" id="teacher-username" placeholder="e.g., teacher">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-password">Password</label>
+                        <input type="password" id="teacher-password" placeholder="Password">
+                    </div>
+                    <p class="muted small-text">Demo credentials – Username: <code>teacher</code>, Password: <code>teacher123</code></p>
+                    <button id="teacher-login-btn" class="btn secondary-btn full-width">Login as Teacher</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home / Configuration Section (Student) -->
+        <section id="home-section" class="hidden">
+            <h2>Start a Quiz</h2>
+            <p>Choose a subject, set your time limit, and start the quiz. Fully responsive and built with OOP concepts.</p>
+
+            <div class="card">
+                <form id="start-form">
+                    <div class="form-group">
+                        <label for="subject">Select Subject</label>
+                        <select id="subject" required>
+                            <!-- Subjects will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="question-count">Number of Questions</label>
+                        <select id="question-count">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="all">All available</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Time Limit (seconds)</label>
+                        <div class="time-options">
+                            <label><input type="radio" name="time" value="30"> 30s</label>
+                            <label><input type="radio" name="time" value="60" checked> 60s</label>
+                            <label><input type="radio" name="time" value="120"> 120s</label>
+                            <label><input type="radio" name="time" value="custom"> Custom</label>
+                        </div>
+                        <input type="number" id="custom-time" placeholder="Enter custom time in seconds" min="10" class="hidden">
+                    </div>
+
+                    <button type="submit" class="btn primary-btn full-width">Start Quiz</button>
+                </form>
+            </div>
+
+            <div class="card info-card">
+                <h3>Student Features</h3>
+                <ul>
+                    <li>Attempt quizzes in different subjects</li>
+                    <li>Change time limit (fixed or custom)</li>
+                    <li>Randomized questions & options each attempt</li>
+                    <li>See detailed result and answer review at the end</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz-section" class="hidden">
+            <div class="quiz-header">
+                <div>
+                    <h2 id="quiz-subject-title">Quiz</h2>
+                    <p id="quiz-username-display" class="muted"></p>
+                </div>
+                <div class="quiz-info">
+                    <span id="question-counter">Question 1/5</span>
+                    <span id="timer">Time left: 60s</span>
+                </div>
+            </div>
+
+            <div class="card question-card">
+                <h3 id="question-text">Question text will appear here</h3>
+                <ul id="options-list" class="options-list">
+                    <!-- Options injected here -->
+                </ul>
+            </div>
+
+            <div class="quiz-controls">
+                <button id="prev-btn" class="btn secondary-btn">Previous</button>
+                <button id="next-btn" class="btn primary-btn">Next</button>
+                <button id="submit-btn" class="btn danger-btn">Submit Quiz</button>
+            </div>
+        </section>
+
+        <!-- Result Section (Student Result View) -->
+        <section id="result-section" class="hidden">
+            <div class="card result-card">
+                <h2>Quiz Result</h2>
+                <p id="result-username"></p>
+                <p><strong>Subject:</strong> <span id="result-subject"></span></p>
+                <p><strong>Score:</strong> <span id="result-score"></span></p>
+                <p><strong>Percentage:</strong> <span id="result-percentage"></span>%</p>
+                <p><strong>Grade:</strong> <span id="result-grade"></span></p>
+                <p><strong>Time Used:</strong> <span id="result-time-used"></span></p>
+                <p><strong>Time Status:</strong> <span id="result-time-status"></span></p>
+                <p><strong>Questions Attempted:</strong> <span id="result-attempted"></span></p>
+            </div>
+
+            <div class="quiz-controls">
+                <button id="retry-btn" class="btn primary-btn">Retry Same Subject</button>
+                <button id="change-config-btn" class="btn secondary-btn">Change Settings</button>
+            </div>
+
+            <div class="card">
+                <h3>Answer Review</h3>
+                <ul id="answers-review">
+                    <!-- Review items injected here -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- Teacher Section (Dashboard + Question Management) -->
+        <section id="teacher-section" class="hidden">
+            <div class="card">
+                <h2>Teacher Dashboard</h2>
+                <p class="muted">
+                    Only logged-in teachers can see this part. This works similar to a simplified Google Forms + response sheet:
+                    you can create subjects and questions, and view stored quiz marks of students.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Stored Quiz Results (Marks)</h3>
+                <p class="muted small-text">These results are stored locally in this browser (demo mode). Only teachers can see them.</p>
+                <div class="table-wrapper">
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Student ID</th>
+                                <th>Subject</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Grade</th>
+                                <th>Attempted</th>
+                                <th>Time Used</th>
+                                <th>Taken At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Question & Subject Management</h3>
+                <p class="muted small-text">Create subjects and add questions dynamically (similar to Google Forms question creation).</p>
+
+                <div class="admin-grid">
+                    <div>
+                        <h4>Add New Subject</h4>
+                        <label for="new-subject-key">Subject Key (no spaces, e.g., python)</label>
+                        <input type="text" id="new-subject-key" placeholder="e.g., python_basics">
+                        <label for="new-subject-label">Subject Label (display name)</label>
+                        <input type="text" id="new-subject-label" placeholder="e.g., Python Basics">
+                        <button id="add-subject-btn" class="btn primary-btn">Add Subject</button>
+                    </div>
+
+                    <div>
+                        <h4>Add New Question</h4>
+                        <label for="admin-subject-select">Select Subject</label>
+                        <select id="admin-subject-select"></select>
+
+                        <label for="admin-question-text">Question Text</label>
+                        <textarea id="admin-question-text" rows="3" placeholder="Enter the question"></textarea>
+
+                        <label>Options</label>
+                        <input type="text" class="admin-option" id="admin-option-0" placeholder="Option 1">
+                        <input type="text" class="admin-option" id="admin-option-1" placeholder="Option 2">
+                        <input type="text" class="admin-option" id="admin-option-2" placeholder="Option 3">
+                        <input type="text" class="admin-option" id="admin-option-3" placeholder="Option 4">
+
+                        <label for="admin-correct-index">Correct Option Index (0-3)</label>
+                        <input type="number" id="admin-correct-index" min="0" max="3" value="0">
+
+                        <button id="add-question-btn" class="btn primary-btn">Add Question</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Advanced Quiz App – Mobile Computing & Applications Lab Project (Student + Teacher + OOP)</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
